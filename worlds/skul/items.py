@@ -11,61 +11,96 @@ if TYPE_CHECKING:
 # We will have a lookup from item name to ID here that, in world.py, we will import and bind to the world class.
 # Even if an item doesn't exist on specific options, it must be present in this lookup.
 ITEM_NAME_TO_ID = {
-    "Key": 1,
-    "Sword": 2,
-    "Shield": 3,
-    "Hammer": 4,
-    "Health Upgrade": 5,
-    "Confetti Cannon": 6,
-    "Math Trap": 7,
+    
+    # Progression
+    "Progressive Stage": 20,
+    "Progressive Skull Tree": 21,
+    "Progressive Bone Tree": 22,
+    "Progressive Spirit Tree": 23,
+    
+    # Useful
+    "Marrow Transplant": 1,
+    "Thick Bone": 2,
+    "Fatal Mind": 3,
+    "Quick Dislocation": 4,
+    "Fracture Prevention": 5,
+    "Ancestral Fortitude": 6,
+    "Nutrition Supply": 7,
+    "Heavy Frame": 8,
+    "Spirit Acceleration": 9,
+    "Exoskeleton Reinforcement": 10,
+    "Reassemble": 11,
+    "Ancient Alchemy": 12,
+    "Fox NPC": 13,
+    "Ogre NPC": 14,
+    "Druid NPC": 15,
+    "Death Knight NPC": 16,
+
+    # Filler
+    "Bone x10": 30,
+    "Dark Quartz x100": 31,
+    "Gold x100": 32,
+    "Castle Renovation": 33
 }
 
 # Items should have a defined default classification.
 # In our case, we will make a dictionary from item name to classification.
 DEFAULT_ITEM_CLASSIFICATIONS = {
-    "Key": ItemClassification.progression,
-    "Sword": ItemClassification.progression | ItemClassification.useful,  # Items can have multiple classifications.
-    "Shield": ItemClassification.progression,
-    "Hammer": ItemClassification.progression,
-    "Health Upgrade": ItemClassification.useful,
-    "Confetti Cannon": ItemClassification.filler,
-    "Math Trap": ItemClassification.trap,
+    "Progressive Stage": ItemClassification.progression,
+    "Progressive Skull Tree": ItemClassification.progression,
+    "Progressive Bone Tree": ItemClassification.progression,
+    "Progressive Spirit Tree": ItemClassification.progression,
+    
+    "Marrow Transplant": ItemClassification.useful,
+    "Thick Bone": ItemClassification.useful,
+    "Fatal Mind": ItemClassification.useful,
+    "Quick Dislocation": ItemClassification.useful,
+    "Fracture Prevention": ItemClassification.useful,
+    "Ancestral Fortitude": ItemClassification.useful,
+    "Nutrition Supply": ItemClassification.useful,
+    "Heavy Frame": ItemClassification.useful,
+    "Spirit Acceleration": ItemClassification.useful,
+    "Exoskeleton Reinforcement": ItemClassification.useful,
+    "Reassemble": ItemClassification.useful,
+    "Ancient Alchemy": ItemClassification.useful,
+    "Fox NPC": ItemClassification.useful,
+    "Ogre NPC": ItemClassification.useful,
+    "Druid NPC": ItemClassification.useful,
+    
+    "Bone x10": ItemClassification.filler,
+    "Dark Quartz x100": ItemClassification.filler,
+    "Gold x200": ItemClassification.filler,
+    
+    "De-Skull Trap": ItemClassification.trap,
 }
 
 
 # Each Item instance must correctly report the "game" it belongs to.
 # To make this simple, it is common practice to subclass the basic Item class and override the "game" field.
 class SkulItem(Item):
-    game = "APQuest"
+    game = "Skul: The Hero Slayer"
 
 
 # Ontop of our regular itempool, our world must be able to create arbitrary amounts of filler as requested by core.
 # To do this, it must define a function called world.get_filler_item_name(), which we will define in world.py later.
 # For now, let's make a function that returns the name of a random filler item here in items.py.
 def get_random_filler_item_name(world: SkulWorld) -> str:
-    # APQuest has an option called "trap_chance".
-    # This is the percentage chance that each filler item is a Math Trap instead of a Confetti Cannon.
-    # For this purpose, we need to use a random generator.
-
-    # IMPORTANT: Whenever you need to use a random generator, you must use world.random.
-    # This ensures that generating with the same generator seed twice yields the same output.
-    # DO NOT use a bare random object from Python's built-in random module.
-    if world.random.randint(0, 99) < world.options.trap_chance:
-        return "Math Trap"
-    return "Confetti Cannon"
+    
+    rand_fill_pick = world.random.randint(0, 3)
+    
+    match rand_fill_pick:
+        case 0:
+            return "Bone x10"
+        case 1:
+            return "Dark Quartz x100"
+        case 2:
+            return "Gold x100"
+        case 3:
+            return "De-Skull Trap"
 
 
 def create_item_with_correct_classification(world: SkulWorld, name: str) -> SkulItem:
-    # Our world class must have a create_item() function that can create any of our items by name at any time.
-    # So, we make this helper function that creates the item by name with the correct classification.
-    # Note: This function's content could just be the contents of world.create_item in world.py directly,
-    # but it seemed nicer to have it in its own function over here in items.py.
     classification = DEFAULT_ITEM_CLASSIFICATIONS[name]
-
-    # It is perfectly normal and valid for an item's classification to differ based on the player's options.
-    # In our case, Health Upgrades are only relevant to logic (and thus labeled as "progression") in hard mode.
-    if name == "Health Upgrade" and world.options.hard_mode:
-        classification = ItemClassification.progression
 
     return SkulItem(name, classification, ITEM_NAME_TO_ID[name], world.player)
 
@@ -82,21 +117,26 @@ def create_all_items(world: SkulWorld) -> None:
     # First, we create a list containing all the items that always exist.
 
     itempool: list[Item] = [
-        world.create_item("Key"),
-        world.create_item("Sword"),
-        world.create_item("Shield"),
-        world.create_item("Health Upgrade"),
-        world.create_item("Health Upgrade"),
+        world.create_item("Progressive Stage"),
+        world.create_item("Progressive Skull Tree"),
+        world.create_item("Progressive Bone Tree"),
+        world.create_item("Progressive Spirit Tree"),
+        world.create_item("Marrow Transplant"),
+        world.create_item("Thick Bone"),
+        world.create_item("Fatal Mind"),
+        world.create_item("Quick Dislocation"),
+        world.create_item("Fracture Prevention"),
+        world.create_item("Ancestral Fortitude"),
+        world.create_item("Nutrition Supply"),
+        world.create_item("Heavy Frame"),
+        world.create_item("Spirit Acceleration"),
+        world.create_item("Exoskeleton Reinforcement"),
+        world.create_item("Reassemble"),
+        world.create_item("Ancient Alchemy"),
+        world.create_item("Fox NPC"),
+        world.create_item("Ogre NPC"),
+        world.create_item("Druid NPC")
     ]
-
-    # Some items may only exist if the player enables certain options.
-    # In our case, If the hammer option is enabled, the sixth item is the Hammer.
-    # Otherwise, we add a filler Confetti Cannon.
-    if world.options.hammer:
-        # Once again, it is important to stress that even though the Hammer doesn't always exist,
-        # it must be present in the worlds item_name_to_id.
-        # Whether it is actually in the itempool is determined purely by whether we create and add the item here.
-        itempool.append(world.create_item("Hammer"))
 
     # Archipelago requires that each world submits as many locations as it submits items.
     # This is where we can use our filler and trap items.
@@ -160,7 +200,3 @@ def create_all_items(world: SkulWorld) -> None:
     # They will be sent as soon as they connect for the first time (depending on your client's item handling flag).
     # Players can add precollected items themselves via the generic "start_inventory" option.
     # If you want to add your own precollected items, you can do so via world.push_precollected().
-    if world.options.start_with_one_confetti_cannon:
-        # We're adding a filler item, but you can also add progression items to the player's precollected inventory.
-        starting_confetti_cannon = world.create_item("Confetti Cannon")
-        world.push_precollected(starting_confetti_cannon)

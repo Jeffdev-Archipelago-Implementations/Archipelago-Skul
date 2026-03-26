@@ -12,22 +12,39 @@ if TYPE_CHECKING:
 # Every location must have a unique integer ID associated with it.
 # We will have a lookup from location name to ID here that, in world.py, we will import and bind to the world class.
 # Even if a location doesn't exist on specific options, it must be present in this lookup.
+
+# 1-10
+# Marrow Transplant
+# Thick Bone
+# Fatal Mind
+# Quick Dislocation
+# Fracture Prevention
+# Ancestral Fortitude
+# Forest of Harmony Room [Number] Cleared
+# Grand Hall Room [Number] Cleared
+# The Black Lab Room [Number] Cleared
+
+# 1-2
+# Nutrition Supply
+# Heavy Frame
+# Spirit Acceleration
+# Exoskeleton Reinforcement
+# Reassemble
+# Ancient Alchemy
+
+# 1-4
+# Castle Repair
+
+
 LOCATION_NAME_TO_ID = {
-    "Top Left Room Chest": 1,
-    "Top Middle Chest": 2,
-    "Bottom Left Chest": 3,
-    "Bottom Left Extra Chest": 4,
-    "Bottom Right Room Left Chest": 5,
-    "Bottom Right Room Right Chest": 6,
-    # Location IDs don't need to be sequential, as long as they're unique and greater than 0.
-    "Right Room Enemy Drop": 10,
+
 }
 
 
 # Each Location instance must correctly report the "game" it belongs to.
 # To make this simple, it is common practice to subclass the basic Location class and override the "game" field.
 class SkulLocation(Location):
-    game = "APQuest"
+    game = "Skul: The Hero Slayer"
 
 
 # Let's make one more helper method before we begin actually creating locations.

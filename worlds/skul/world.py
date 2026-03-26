@@ -24,14 +24,13 @@ from . import options as apquest_options  # rename due to a name conflict with W
 # It is recommended that you read these in that specific order, then come back to the world class.
 class SkulWorld(World):
     """
-    APQuest is a minimal 8bit-era inspired adventure game with grid-like movement.
-    Good games don't need more than six checks.
+    Skul The Hero Slayer is a 2D action platformer where you play as Skul, a skeleton who can swap out his head to gain different abilities.
     """
 
     # The docstring should contain a description of the game, to be displayed on the WebHost.
 
     # You must override the "game" field to say the name of the game.
-    game = "APQuest"
+    game = "Skul: The Hero Slayer"
 
     # The WebWorld is a definition class that governs how this world will be displayed on the website.
     web = web_world.SkulWebWorld()
