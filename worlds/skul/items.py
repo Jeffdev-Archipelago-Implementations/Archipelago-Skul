@@ -39,8 +39,11 @@ ITEM_NAME_TO_ID = {
     # Filler
     "Bone x10": 30,
     "Dark Quartz x100": 31,
-    "Gold x100": 32,
-    "Castle Renovation": 33
+    "Gold x200": 32,
+    "Castle Repair": 33,
+    
+    # Trap
+    "De-Skull Trap": 40,
 }
 
 # Items should have a defined default classification.
@@ -66,10 +69,12 @@ DEFAULT_ITEM_CLASSIFICATIONS = {
     "Fox NPC": ItemClassification.useful,
     "Ogre NPC": ItemClassification.useful,
     "Druid NPC": ItemClassification.useful,
-    
+    "Death Knight NPC": ItemClassification.useful,
+
     "Bone x10": ItemClassification.filler,
     "Dark Quartz x100": ItemClassification.filler,
     "Gold x200": ItemClassification.filler,
+    "Castle Repair": ItemClassification.filler,
     
     "De-Skull Trap": ItemClassification.trap,
 }
@@ -94,7 +99,7 @@ def get_random_filler_item_name(world: SkulWorld) -> str:
         case 1:
             return "Dark Quartz x100"
         case 2:
-            return "Gold x100"
+            return "Gold x200"
         case 3:
             return "De-Skull Trap"
 
@@ -116,27 +121,29 @@ def create_all_items(world: SkulWorld) -> None:
     # Creating items should generally be done via the world's create_item method.
     # First, we create a list containing all the items that always exist.
 
-    itempool: list[Item] = [
-        world.create_item("Progressive Stage"),
-        world.create_item("Progressive Skull Tree"),
-        world.create_item("Progressive Bone Tree"),
-        world.create_item("Progressive Spirit Tree"),
-        world.create_item("Marrow Transplant"),
-        world.create_item("Thick Bone"),
-        world.create_item("Fatal Mind"),
-        world.create_item("Quick Dislocation"),
-        world.create_item("Fracture Prevention"),
-        world.create_item("Ancestral Fortitude"),
-        world.create_item("Nutrition Supply"),
-        world.create_item("Heavy Frame"),
-        world.create_item("Spirit Acceleration"),
-        world.create_item("Exoskeleton Reinforcement"),
-        world.create_item("Reassemble"),
-        world.create_item("Ancient Alchemy"),
-        world.create_item("Fox NPC"),
-        world.create_item("Ogre NPC"),
-        world.create_item("Druid NPC")
-    ]
+    itempool: list[Item] = []
+
+    # Progressive Stage (one per area: Forest, Grand Hall, Black Lab, Fortress of Fate, Sacred Grounds)
+    itempool += [world.create_item("Progressive Stage") for _ in range(5)]
+
+    # Bone upgrades (x10 each)
+    for name in [
+        "Marrow Transplant", "Thick Bone", "Fatal Mind",
+        "Quick Dislocation", "Fracture Prevention", "Ancestral Fortitude",
+    ]:
+        itempool += [world.create_item(name) for _ in range(10)]
+
+    # Dark Quartz upgrades (x2 each)
+    for name in [
+        "Nutrition Supply", "Heavy Frame", "Spirit Acceleration",
+        "Exoskeleton Reinforcement", "Reassemble", "Ancient Alchemy",
+    ]:
+        itempool += [world.create_item(name) for _ in range(2)]
+
+    # Castle renovations and NPCs
+    itempool += [world.create_item("Castle Repair") for _ in range(4)]
+    itempool += [world.create_item("Fox NPC"), world.create_item("Ogre NPC"),
+                 world.create_item("Druid NPC"), world.create_item("Death Knight NPC")]
 
     # Archipelago requires that each world submits as many locations as it submits items.
     # This is where we can use our filler and trap items.

@@ -31,6 +31,3 @@ class SkulWebWorld(WebWorld):
 
     # We add these tutorials to our WebWorld by overriding the "tutorials" field.
     tutorials = [setup_en]
-
-    # If we have option groups and/or option presets, we need to specify these here as well.
-    option_groups = option_groups
