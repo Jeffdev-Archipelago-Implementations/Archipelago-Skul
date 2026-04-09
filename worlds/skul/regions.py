@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from BaseClasses import Region
+from rule_builder.rules import Has
 
 if TYPE_CHECKING:
     from .world import SkulWorld
@@ -34,13 +35,13 @@ def connect_regions(world: SkulWorld) -> None:
     sacred_grounds = world.get_region("Sacred Grounds")
 
     # Each stage area requires a certain number of Progressive Stage items.
-    stronghold.connect(forest, "Stronghold to Forest of Harmony",
-                       lambda state: state.has("Progressive Stage", world.player, 1))
-    forest.connect(grand_hall, "Forest of Harmony to Grand Hall",
-                   lambda state: state.has("Progressive Stage", world.player, 2))
-    grand_hall.connect(black_lab, "Grand Hall to The Black Lab",
-                       lambda state: state.has("Progressive Stage", world.player, 3))
-    black_lab.connect(fortress, "The Black Lab to Fortress of Fate",
-                      lambda state: state.has("Progressive Stage", world.player, 4))
-    fortress.connect(sacred_grounds, "Fortress of Fate to Sacred Grounds",
-                     lambda state: state.has("Progressive Stage", world.player, 5))
+    world.create_entrance(stronghold, forest, Has("Progressive Stage", count=1),
+                          name="Stronghold to Forest of Harmony")
+    world.create_entrance(forest, grand_hall, Has("Progressive Stage", count=2),
+                          name="Forest of Harmony to Grand Hall")
+    world.create_entrance(grand_hall, black_lab, Has("Progressive Stage", count=3),
+                          name="Grand Hall to The Black Lab")
+    world.create_entrance(black_lab, fortress, Has("Progressive Stage", count=4),
+                          name="The Black Lab to Fortress of Fate")
+    world.create_entrance(fortress, sacred_grounds, Has("Progressive Stage", count=5),
+                          name="Fortress of Fate to Sacred Grounds")
