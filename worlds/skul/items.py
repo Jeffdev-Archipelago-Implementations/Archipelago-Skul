@@ -78,7 +78,7 @@ class SkulItem(Item):
 
 
 def get_random_filler_item_name(world: SkulWorld) -> str:
-    if world.options.enable_traps:
+    if world.options.traps_enabled:
         rand_fill_pick = world.random.randint(0, 3)
     else:
         rand_fill_pick = world.random.randint(0, 2)

@@ -9,98 +9,84 @@ from . import items
 if TYPE_CHECKING:
     from .world import SkulWorld
 
-# Every location must have a unique integer ID associated with it.
-# We will have a lookup from location name to ID here that, in world.py, we will import and bind to the world class.
-# Even if a location doesn't exist on specific options, it must be present in this lookup.
-
-BASE_ID = 100
-
 def _build_location_name_to_id() -> dict[str, int]:
     locs: dict[str, int] = {}
-    next_id = BASE_ID
 
-    # Dark Quartz upgrades purchasable up to 10 times each
+    # Bone upgrades (100-159)
+    bone_base = 100
     for name in [
         "Marrow Transplant", "Thick Bone", "Fatal Mind",
         "Quick Dislocation", "Fracture Prevention", "Ancestral Fortitude",
     ]:
         for i in range(1, 11):
-            locs[f"{name} {i}"] = next_id
-            next_id += 1
+            locs[f"{name} {i}"] = bone_base
+            bone_base += 1
 
-    # Dark Quartz upgrades purchasable up to 2 times each
+    # Dark Quartz upgrades (160-171)
+    dq_base = 160
     for name in [
         "Nutrition Supply", "Heavy Frame", "Spirit Acceleration",
         "Exoskeleton Reinforcement", "Reassemble", "Ancient Alchemy",
     ]:
         for i in range(1, 3):
-            locs[f"{name} {i}"] = next_id
-            next_id += 1
+            locs[f"{name} {i}"] = dq_base
+            dq_base += 1
 
-    # Room-cleared checks (10 rooms each across 3 areas)
-    for area in ["Forest of Harmony", "Grand Hall", "The Black Lab"]:
-        for room in range(1, 11):
-            locs[f"{area} Room {room} Cleared"] = next_id
-            next_id += 1
-
-    # Shop item unlocks (8 per area)
-    for area in ["Forest of Harmony", "Grand Hall", "The Black Lab"]:
+    # Shop items — registered but currently unused (Forest 196-203, Grand Hall 204-211, Black Lab 212-219)
+    for area, base in [
+        ("Forest of Harmony", 196),
+        ("Grand Hall",        204),
+        ("The Black Lab",     212),
+    ]:
         for i in range(1, 9):
-            locs[f"{area} Shop Item {i}"] = next_id
-            next_id += 1
+            locs[f"{area} Shop Item {i}"] = base + i - 1
 
-    # Castle Repair (4 upgrades)
+    # Castle Repair (220-223)
     for i in range(1, 5):
-        locs[f"Castle Repair {i}"] = next_id
-        next_id += 1
+        locs[f"Castle Repair {i}"] = 220 + i - 1
 
-    # Fortress of Fate (4 rooms, 8 shop items)
-    for room in range(1, 5):
-        locs[f"Fortress of Fate Room {room} Cleared"] = next_id
-        next_id += 1
+    # Fortress shop items — registered but currently unused (228-235)
     for i in range(1, 9):
-        locs[f"Fortress of Fate Shop Item {i}"] = next_id
-        next_id += 1
+        locs[f"Fortress of Fate Shop Item {i}"] = 228 + i - 1
 
-    # Mini boss and boss defeats for stage areas
-    for area in ["Forest of Harmony", "Grand Hall", "The Black Lab"]:
-        locs[f"{area} Mini Boss Defeated"] = next_id
-        next_id += 1
-        locs[f"{area} Boss Defeated"] = next_id
-        next_id += 1
+    # Mini boss and boss defeats (236-243)
+    locs["Forest of Harmony Mini Boss Defeated"]  = 236
+    locs["Forest of Harmony Boss Defeated"]       = 237
+    locs["Grand Hall Mini Boss Defeated"]          = 238
+    locs["Grand Hall Boss Defeated"]               = 239
+    locs["The Black Lab Mini Boss Defeated"]       = 240
+    locs["The Black Lab Boss Defeated"]            = 241
+    locs["Fortress of Fate Boss Defeated"]         = 242
+    locs["Fortress of Fate Mini Boss Defeated"]    = 243
 
-    # Fortress of Fate boss defeat
-    locs["Fortress of Fate Boss Defeated"] = next_id
-    next_id += 1
+    # Shrine checks — up to 10 per area (Forest 550+, Grand Hall 650+, Black Lab 750+, Fortress 850+)
+    for area, base in [
+        ("Forest of Harmony", 550),
+        ("Grand Hall",        650),
+        ("The Black Lab",     750),
+        ("Fortress of Fate",  850),
+    ]:
+        for i in range(1, 11):
+            locs[f"{area} Shrine {i}"] = base + i - 1
 
-    # Freed NPC locations
-    locs["Fox NPC Freed"] = next_id
-    next_id += 1
-    locs["Ogre NPC Freed"] = next_id
-    next_id += 1
-    locs["Druid NPC Freed"] = next_id
-    next_id += 1
-    locs["Knight NPC Freed"] = next_id
-    next_id += 1
+    # Room-cleared checks (Forest 500+, Grand Hall 600+, Black Lab 700+, Fortress 800+)
+    for area, base in [
+        ("Forest of Harmony", 500),
+        ("Grand Hall",        600),
+        ("The Black Lab",     700),
+        ("Fortress of Fate",  800),
+    ]:
+        for room in range(1, 17):
+            locs[f"{area} Room {room} Cleared"] = base + room - 1
 
     return locs
 
 
 LOCATION_NAME_TO_ID = _build_location_name_to_id()
 
-
-# Each Location instance must correctly report the "game" it belongs to.
-# To make this simple, it is common practice to subclass the basic Location class and override the "game" field.
 class SkulLocation(Location):
     game = "Skul: The Hero Slayer"
 
-
-# Let's make one more helper method before we begin actually creating locations.
-# Later on in the code, we'll want specific subsections of LOCATION_NAME_TO_ID.
-# To reduce the chance of copy-paste errors writing something like {"Chest": LOCATION_NAME_TO_ID["Chest"]},
-# let's make a helper method that takes a list of location names and returns them as a dict with their IDs.
-# Note: There is a minor typing quirk here. Some functions want location addresses to be an "int | None",
-# so while our function here only ever returns dict[str, int], we annotate it as dict[str, int | None].
 def get_location_names_with_ids(location_names: list[str]) -> dict[str, int | None]:
     return {location_name: LOCATION_NAME_TO_ID[location_name] for location_name in location_names}
 
@@ -117,6 +103,9 @@ def create_regular_locations(world: SkulWorld) -> None:
     black_lab = world.get_region("The Black Lab")
     fortress = world.get_region("Fortress of Fate")
 
+    req_rooms = world.options.req_room_count.value
+    shrine_checks_count = world.options.shrine_checks_count.value
+
     # Stronghold: bone upgrades and castle repair
     stronghold_locs: list[str] = []
     for name in [
@@ -132,33 +121,21 @@ def create_regular_locations(world: SkulWorld) -> None:
     stronghold_locs += [f"Castle Repair {i}" for i in range(1, 5)]
     stronghold.add_locations(get_location_names_with_ids(stronghold_locs), SkulLocation)
 
-    # Stage areas: room-cleared checks, shop item unlocks, mini boss + boss defeats
+    # Stage areas: room-cleared checks, mini boss + boss defeats, shrines
     for area, region in [
         ("Forest of Harmony", forest),
-        ("Grand Hall", grand_hall),
-        ("The Black Lab", black_lab),
+        ("Grand Hall",        grand_hall),
+        ("The Black Lab",     black_lab),
+        ("Fortress of Fate",  fortress),
     ]:
         area_locs = {f"{area} Room {i} Cleared": LOCATION_NAME_TO_ID[f"{area} Room {i} Cleared"]
-                     for i in range(1, 11)}
-        area_locs |= {f"{area} Shop Item {i}": LOCATION_NAME_TO_ID[f"{area} Shop Item {i}"]
-                      for i in range(1, 9)}
+                     for i in range(1, req_rooms + 1)}
         area_locs[f"{area} Mini Boss Defeated"] = LOCATION_NAME_TO_ID[f"{area} Mini Boss Defeated"]
-        area_locs[f"{area} Boss Defeated"] = LOCATION_NAME_TO_ID[f"{area} Boss Defeated"]
+        area_locs[f"{area} Boss Defeated"]       = LOCATION_NAME_TO_ID[f"{area} Boss Defeated"]
+        if shrine_checks_count:
+            area_locs |= {f"{area} Shrine {i}": LOCATION_NAME_TO_ID[f"{area} Shrine {i}"]
+                          for i in range(1, shrine_checks_count + 1)}
         region.add_locations(area_locs, SkulLocation)
-
-    # Fortress of Fate: rooms, shop, boss defeat
-    fortress_locs = {f"Fortress of Fate Room {i} Cleared": LOCATION_NAME_TO_ID[f"Fortress of Fate Room {i} Cleared"]
-                     for i in range(1, 5)}
-    fortress_locs |= {f"Fortress of Fate Shop Item {i}": LOCATION_NAME_TO_ID[f"Fortress of Fate Shop Item {i}"]
-                      for i in range(1, 9)}
-    fortress_locs["Fortress of Fate Boss Defeated"] = LOCATION_NAME_TO_ID["Fortress of Fate Boss Defeated"]
-    fortress.add_locations(fortress_locs, SkulLocation)
-
-    # Freed NPC locations
-    forest.add_locations(get_location_names_with_ids(["Fox NPC Freed"]), SkulLocation)
-    grand_hall.add_locations(get_location_names_with_ids(["Ogre NPC Freed"]), SkulLocation)
-    black_lab.add_locations(get_location_names_with_ids(["Druid NPC Freed"]), SkulLocation)
-    fortress.add_locations(get_location_names_with_ids(["Knight NPC Freed"]), SkulLocation)
 
 
 def create_events(world: SkulWorld) -> None:

@@ -32,8 +32,8 @@ class ShrineChecks(Range):
     display_name = "Shrine Check Count"
 
     range_start = 0
-    range_end = 3
-    default = 0
+    range_end = 10
+    default = 5
 
 class EnableTraps(Toggle):
     """
@@ -48,7 +48,7 @@ class SkulOptions(PerGameCommonOptions):
     quartz_mult: QuartzMult
     req_room_count: ReqRoomCount
     shrine_checks_count: ShrineChecks
-    enable_traps: EnableTraps
+    traps_enabled: EnableTraps
     death_link: DeathLink
 
 option_groups = [
