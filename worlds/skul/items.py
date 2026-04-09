@@ -107,6 +107,10 @@ def create_all_items(world: SkulWorld) -> None:
     # Progressive Stage (one per area: Forest, Grand Hall, Black Lab, Fortress of Fate, Sacred Grounds)
     itempool += [world.create_item("Progressive Stage") for _ in range(5)]
 
+    # Progressive tree upgrades (3 per tree — gates tiers 1, 2, 3 of each witch tree)
+    for name in ["Progressive Skull Tree", "Progressive Bone Tree", "Progressive Spirit Tree"]:
+        itempool += [world.create_item(name) for _ in range(3)]
+
     # Bone upgrades (x10 each)
     for name in [
         "Marrow Transplant", "Thick Bone", "Fatal Mind",
