@@ -53,11 +53,11 @@ def _build_location_name_to_id() -> dict[str, int]:
     locs["Forest of Harmony Mini Boss Defeated"]  = 236
     locs["Forest of Harmony Boss Defeated"]       = 237
     locs["Grand Hall Mini Boss Defeated"]          = 238
-    locs["Grand Hall Boss Defeated"]               = 239
-    locs["The Black Lab Mini Boss Defeated"]       = 240
-    locs["The Black Lab Boss Defeated"]            = 241
-    locs["Fortress of Fate Boss Defeated"]         = 242
-    locs["Fortress of Fate Mini Boss Defeated"]    = 243
+    locs["Fortress of Fate Mini Boss Defeated"]    = 239
+    locs["Grand Hall Boss Defeated"]               = 240
+    locs["The Black Lab Mini Boss Defeated"]       = 241
+    locs["The Black Lab Boss Defeated"]            = 242
+    locs["Fortress of Fate Boss Defeated"]         = 243
 
     # Shrine checks — up to 10 per area (Forest 550+, Grand Hall 650+, Black Lab 750+, Fortress 850+)
     for area, base in [
