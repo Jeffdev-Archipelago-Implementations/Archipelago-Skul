@@ -17,8 +17,8 @@ Before starting the installation process, here's what you should know:
 1. Download [r2modman](https://thunderstore.io/package/ebkr/r2modman/) using the "Manual Download" button, then install it using the executable in the downloaded zip package (You can also use [Thunderstore Mod Manager](https://www.overwolf.com/app/Thunderstore-Thunderstore_Mod_Manager) which works the same, but it requires [Overwolf](https://www.overwolf.com/))
 2. Open the mod manager and select Skul: The Hero Slayer in the game selection screen.
 3. Select the default profile or create a new one.
-4. Open the `Online` tab on the left, then search for `SkulArchipelago`.
-5. Expand `SkulArchipelago` and click the `Download` button to install the latest version and all its dependencies.
+4. Open the `Online` tab on the left, then search for `SkulArchipelago` and `BepInEx Skul`.
+5. Expand `SkulArchipelago` and click the `Download` button to install the latest version, and also do the same for `BepInEx Skul`.
 6. Click `Start Modded` to open the game with the mods.
 
 ### Manual setup
