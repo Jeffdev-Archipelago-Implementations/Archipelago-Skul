@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, DeathLink, OptionGroup, PerGameCommonOptions, Range, Toggle
+from Options import Toggle, DeathLink, OptionGroup, PerGameCommonOptions, Range
 
 class QuartzMult(Range):
     """
@@ -10,8 +10,8 @@ class QuartzMult(Range):
     display_name = "Dark Quartz Multiplier"
 
     range_start = 1
-    range_end = 4
-    default = 1
+    range_end = 8
+    default = 3
 
 class ReqRoomCount(Range):
     """
@@ -35,30 +35,51 @@ class ShrineChecks(Range):
     range_end = 10
     default = 5
 
-class EnableTraps(Toggle):
+class DeSkullTrapWeight(Range):
     """
-    When enabled, trap items can be placed into the item pool.
+    Percentage chance for a filler item to be a De-Skull Trap. Set to 0 to disable traps entirely.
     """
 
-    display_name = "Enable Traps"
-    default = 1
+    display_name = "De-Skull Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 20
+
+class SkullRandomization(Toggle):
+    """
+    Randomize all skulls in the game, so that you must be sent each one.
+    """
+    display_name = "Killable Thieves"
+
+class EnableDLC(Toggle):
+    """
+    Include DLC skulls (Viking, Slave, Officer, Ascetic, Unknown King) in the randomization pool.
+    Requires owning the corresponding DLC.
+    """
+    display_name = "Enable DLC"
 
 @dataclass
 class SkulOptions(PerGameCommonOptions):
     quartz_mult: QuartzMult
     req_room_count: ReqRoomCount
     shrine_checks_count: ShrineChecks
-    traps_enabled: EnableTraps
+    de_skull_trap_weight: DeSkullTrapWeight
     death_link: DeathLink
+    skull_randomization: SkullRandomization
+    enable_dlc: EnableDLC
 
 option_groups = [
+    OptionGroup(
+        "Skull Randomization Options",
+        [SkullRandomization, EnableDLC],
+    ),
     OptionGroup(
         "Location Options",
         [ReqRoomCount, ShrineChecks],
     ),
     OptionGroup(
         "Quality of Life Options",
-        [QuartzMult, EnableTraps],
+        [QuartzMult, DeSkullTrapWeight],
     ),
 ]
 

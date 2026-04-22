@@ -33,6 +33,61 @@ ITEM_NAME_TO_ID = {
     "Druid NPC": 15,
     "Death Knight NPC": 16,
 
+    # Useful Skulls (These start at 100)
+    "Carleon Recruit": 100,
+    "Ent Skull": 101,
+    "Grave Digger": 102,
+    "Mage": 103,
+    "Petty Thief": 104,
+    "Skeleton-Pike": 105,
+    "Skeleton-Shield": 106,
+    "Skeleton-Sword": 107,
+    "Stone Monkey": 108,
+    "Werewolf": 109,
+    "Viking": 110,
+    "Slave": 111,
+
+    # RARE Skulls
+    "Alchemist": 112,
+    "Clown": 113,
+    "Frost Skull": 114,
+    "Gargoyle": 115,
+    "Gene": 116,
+    "Ghoul": 117,
+    "Hunter": 118,
+    "Minotaurus": 119,
+    "Mummy": 120,
+    "Rider": 121,
+    "Skeleton-Bomber": 122,
+    "Warrior": 123,
+    "Water Skull": 124,
+    "Officer": 125,
+
+    # UNIQUE Skulls
+    "Berserker": 126,
+    "Dark Paladin": 127,
+    "Great Warlock": 128,
+    "Living Armor": 129,
+    "Ninja": 130,
+    "Predator": 131,
+    "Prisoner": 132,
+    "Rockstar": 133,
+    "Samurai": 134,
+    "Ascetic": 135,
+
+    # LEGENDARY Skulls
+    "Archlich": 136,
+    "Champion": 137,
+    "Davy Jones": 138,
+    "Gambler": 139,
+    "Grim Reaper": 140,
+    "Yaksha": 141,
+    "Dominator": 142,
+    "Unknown King": 143,
+
+    # SPECIAL Skulls
+    "Guard Captain": 144,
+
     # Filler
     "Bone x10": 30,
     "Dark Quartz x100": 31,
@@ -41,6 +96,10 @@ ITEM_NAME_TO_ID = {
     # Trap
     "De-Skull Trap": 40,
 }
+
+DLC_SKULL_NAMES: frozenset[str] = frozenset({
+    "Viking", "Slave", "Officer", "Ascetic", "Unknown King",
+})
 
 DEFAULT_ITEM_CLASSIFICATIONS = {
     "Progressive Stage": ItemClassification.progression,
@@ -65,6 +124,61 @@ DEFAULT_ITEM_CLASSIFICATIONS = {
     "Druid NPC": ItemClassification.useful,
     "Death Knight NPC": ItemClassification.progression,
 
+    # Common Skulls
+    "Carleon Recruit": ItemClassification.useful,
+    "Ent Skull": ItemClassification.useful,
+    "Grave Digger": ItemClassification.useful,
+    "Mage": ItemClassification.useful,
+    "Petty Thief": ItemClassification.useful,
+    "Skeleton-Pike": ItemClassification.useful,
+    "Skeleton-Shield": ItemClassification.useful,
+    "Skeleton-Sword": ItemClassification.useful,
+    "Stone Monkey": ItemClassification.useful,
+    "Werewolf": ItemClassification.useful,
+    "Viking": ItemClassification.useful, # DLC
+    "Slave": ItemClassification.useful, # DLC
+
+    # RARE Skulls
+    "Alchemist": ItemClassification.useful,
+    "Clown": ItemClassification.useful,
+    "Frost Skull": ItemClassification.useful,
+    "Gargoyle": ItemClassification.useful,
+    "Gene": ItemClassification.useful,
+    "Ghoul": ItemClassification.useful,
+    "Hunter": ItemClassification.useful,
+    "Minotaurus": ItemClassification.useful,
+    "Mummy": ItemClassification.useful,
+    "Rider": ItemClassification.useful,
+    "Skeleton-Bomber": ItemClassification.useful,
+    "Warrior": ItemClassification.useful,
+    "Water Skull": ItemClassification.useful,
+    "Officer": ItemClassification.useful, # DLC
+
+    # UNIQUE Skulls
+    "Berserker": ItemClassification.useful,
+    "Dark Paladin": ItemClassification.useful,
+    "Great Warlock": ItemClassification.useful,
+    "Living Armor": ItemClassification.useful,
+    "Ninja": ItemClassification.useful,
+    "Predator": ItemClassification.useful,
+    "Prisoner": ItemClassification.useful,
+    "Rockstar": ItemClassification.useful,
+    "Samurai": ItemClassification.useful,
+    "Ascetic": ItemClassification.useful, # DLC
+
+    # LEGENDARY Skulls
+    "Archlich": ItemClassification.progression,
+    "Champion": ItemClassification.progression,
+    "Davy Jones": ItemClassification.progression,
+    "Gambler": ItemClassification.progression,
+    "Grim Reaper": ItemClassification.progression,
+    "Yaksha": ItemClassification.progression,
+    "Dominator": ItemClassification.progression,
+    "Unknown King": ItemClassification.progression, # DLC
+
+    # SPECIAL Skulls
+    "Guard Captain": ItemClassification.progression,
+
     "Bone x10": ItemClassification.filler,
     "Dark Quartz x100": ItemClassification.filler,
     "Gold x200": ItemClassification.filler,
@@ -78,20 +192,10 @@ class SkulItem(Item):
 
 
 def get_random_filler_item_name(world: SkulWorld) -> str:
-    if world.options.traps_enabled:
-        rand_fill_pick = world.random.randint(0, 3)
-    else:
-        rand_fill_pick = world.random.randint(0, 2)
-
-    match rand_fill_pick:
-        case 0:
-            return "Bone x10"
-        case 1:
-            return "Dark Quartz x100"
-        case 2:
-            return "Gold x200"
-        case 3:
-            return "De-Skull Trap"
+    trap_chance = world.options.de_skull_trap_weight.value
+    if trap_chance and world.random.randint(0, 99) < trap_chance:
+        return "De-Skull Trap"
+    return world.random.choice(["Bone x10", "Dark Quartz x100", "Gold x200"])
 
 
 def create_item_with_correct_classification(world: SkulWorld, name: str) -> SkulItem:

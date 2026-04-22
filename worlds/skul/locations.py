@@ -32,7 +32,7 @@ def _build_location_name_to_id() -> dict[str, int]:
             locs[f"{name} {i}"] = dq_base
             dq_base += 1
 
-    # Shop items — registered but currently unused (Forest 196-203, Grand Hall 204-211, Black Lab 212-219)
+    # Shop items (Forest 196-203, Grand Hall 204-211, Black Lab 212-219)
     for area, base in [
         ("Forest of Harmony", 196),
         ("Grand Hall",        204),
@@ -45,7 +45,7 @@ def _build_location_name_to_id() -> dict[str, int]:
     for i in range(1, 5):
         locs[f"Castle Repair {i}"] = 220 + i - 1
 
-    # Fortress shop items — registered but currently unused (228-235)
+    # Fortress shop items (228-235)
     for i in range(1, 9):
         locs[f"Fortress of Fate Shop Item {i}"] = 228 + i - 1
 
@@ -132,6 +132,8 @@ def create_regular_locations(world: SkulWorld) -> None:
                      for i in range(1, req_rooms + 1)}
         area_locs[f"{area} Mini Boss Defeated"] = LOCATION_NAME_TO_ID[f"{area} Mini Boss Defeated"]
         area_locs[f"{area} Boss Defeated"]       = LOCATION_NAME_TO_ID[f"{area} Boss Defeated"]
+        area_locs |= {f"{area} Shop Item {i}": LOCATION_NAME_TO_ID[f"{area} Shop Item {i}"]
+                      for i in range(1, 9)}
         if shrine_checks_count:
             area_locs |= {f"{area} Shrine {i}": LOCATION_NAME_TO_ID[f"{area} Shrine {i}"]
                           for i in range(1, shrine_checks_count + 1)}
