@@ -26,14 +26,14 @@ class ReqRoomCount(Range):
 
 class ShrineChecks(Range):
     """
-    How many shrine checks to generate per area. Set to 0 to disable shrine checks entirely.
+    Total number of shrine checks to generate across the game.
     """
 
     display_name = "Shrine Check Count"
 
-    range_start = 0
-    range_end = 10
-    default = 5
+    range_start = 10
+    range_end = 50
+    default = 25
 
 class DeSkullTrapWeight(Range):
     """
@@ -45,18 +45,6 @@ class DeSkullTrapWeight(Range):
     range_end = 100
     default = 20
 
-class SkullRandomization(Toggle):
-    """
-    Randomize all skulls in the game, so that you must be sent each one.
-    """
-    display_name = "Killable Thieves"
-
-class EnableDLC(Toggle):
-    """
-    Include DLC skulls (Viking, Slave, Officer, Ascetic, Unknown King) in the randomization pool.
-    Requires owning the corresponding DLC.
-    """
-    display_name = "Enable DLC"
 
 @dataclass
 class SkulOptions(PerGameCommonOptions):
@@ -65,14 +53,8 @@ class SkulOptions(PerGameCommonOptions):
     shrine_checks_count: ShrineChecks
     de_skull_trap_weight: DeSkullTrapWeight
     death_link: DeathLink
-    skull_randomization: SkullRandomization
-    enable_dlc: EnableDLC
 
 option_groups = [
-    OptionGroup(
-        "Skull Randomization Options",
-        [SkullRandomization, EnableDLC],
-    ),
     OptionGroup(
         "Location Options",
         [ReqRoomCount, ShrineChecks],

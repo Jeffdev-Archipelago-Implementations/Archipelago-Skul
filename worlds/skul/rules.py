@@ -38,10 +38,10 @@ def set_all_location_rules(world: SkulWorld) -> None:
             for i in range(1, max_i + 1):
                 world.set_rule(world.multiworld.get_location(f"{name} {i}", world.player), rule)
 
-    # Soul tree: Spirit Acceleration (tier 0), Ancestral Fortitude (1), Fatal Mind (2), Ancient Alchemy (3)
-    for tier, name in enumerate(["Spirit Acceleration", "Ancestral Fortitude", "Fatal Mind", "Ancient Alchemy"]):
+    # Soul tree: Fatal Mind (tier 0), Ancestral Fortitude (1), Spirit Acceleration (2), Ancient Alchemy (3)
+    for tier, name in enumerate(["Fatal Mind", "Ancestral Fortitude", "Spirit Acceleration", "Ancient Alchemy"]):
         if tier > 0:
-            max_i = 10 if name in ("Ancestral Fortitude", "Fatal Mind") else 2
+            max_i = 10 if name in ("Ancestral Fortitude", "Spirit Acceleration") else 2
             rule = Has("Progressive Spirit Tree", count=tier)
             for i in range(1, max_i + 1):
                 world.set_rule(world.multiworld.get_location(f"{name} {i}", world.player), rule)

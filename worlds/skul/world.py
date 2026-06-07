@@ -35,4 +35,4 @@ class SkulWorld(World):
         return items.get_random_filler_item_name(self)
 
     def fill_slot_data(self) -> Mapping[str, Any]:
-        return self.options.as_dict("quartz_mult", "req_room_count", "shrine_checks_count", "de_skull_trap_weight", "death_link", "enable_dlc")
+        return self.options.as_dict("quartz_mult", "req_room_count", "shrine_checks_count", "de_skull_trap_weight", "death_link")
