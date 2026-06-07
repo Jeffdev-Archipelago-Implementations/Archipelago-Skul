@@ -59,15 +59,9 @@ def _build_location_name_to_id() -> dict[str, int]:
     locs["The Black Lab Boss Defeated"]            = 242
     locs["Fortress of Fate Boss Defeated"]         = 243
 
-    # Shrine checks - up to 13 per area (Forest 550+, Grand Hall 650+, Black Lab 750+, Fortress 850+)
-    for area, base in [
-        ("Forest of Harmony", 550),
-        ("Grand Hall",        650),
-        ("The Black Lab",     750),
-        ("Fortress of Fate",  850),
-    ]:
-        for i in range(1, 14):
-            locs[f"{area} Shrine {i}"] = base + i - 1
+    # Shrine checks (550+, up to 50)
+    for i in range(1, 51):
+        locs[f"Shrine {i}"] = 550 + i - 1
 
     # Room-cleared checks (Forest 500+, Grand Hall 600+, Black Lab 700+, Fortress 800+)
     for area, base in [
@@ -119,30 +113,22 @@ def create_regular_locations(world: SkulWorld) -> None:
     ]:
         stronghold_locs += [f"{name} {i}" for i in range(1, 3)]
     stronghold_locs += [f"Castle Repair {i}" for i in range(1, 5)]
+    stronghold_locs += [f"Shrine {i}" for i in range(1, shrine_checks_count + 1)]
     stronghold.add_locations(get_location_names_with_ids(stronghold_locs), SkulLocation)
 
-    # Distribute total shrine checks as evenly as possible across the 4 areas.
-    areas = [
+    # Stage areas: room-cleared checks, mini boss + boss defeats, shop items
+    for area, region in [
         ("Forest of Harmony", forest),
         ("Grand Hall",        grand_hall),
         ("The Black Lab",     black_lab),
         ("Fortress of Fate",  fortress),
-    ]
-    base_per_area = shrine_checks_count // 4
-    extra = shrine_checks_count % 4
-    shrine_counts = [base_per_area + (1 if i < extra else 0) for i in range(4)]
-
-    # Stage areas: room-cleared checks, mini boss + boss defeats, shrines
-    for (area, region), area_shrine_count in zip(areas, shrine_counts):
+    ]:
         area_locs = {f"{area} Room {i} Cleared": LOCATION_NAME_TO_ID[f"{area} Room {i} Cleared"]
                      for i in range(1, req_rooms + 1)}
         area_locs[f"{area} Mini Boss Defeated"] = LOCATION_NAME_TO_ID[f"{area} Mini Boss Defeated"]
         area_locs[f"{area} Boss Defeated"]       = LOCATION_NAME_TO_ID[f"{area} Boss Defeated"]
         area_locs |= {f"{area} Shop Item {i}": LOCATION_NAME_TO_ID[f"{area} Shop Item {i}"]
                       for i in range(1, 9)}
-        if area_shrine_count:
-            area_locs |= {f"{area} Shrine {i}": LOCATION_NAME_TO_ID[f"{area} Shrine {i}"]
-                          for i in range(1, area_shrine_count + 1)}
         region.add_locations(area_locs, SkulLocation)
 
 
