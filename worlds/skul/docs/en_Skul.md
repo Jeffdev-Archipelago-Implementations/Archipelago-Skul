@@ -7,7 +7,6 @@ Skul: The Hero Slayer is a roguelite indie game where you control a skeleton who
 ## What does randomization do to this game?
 - Witch Mastery levels, each level sends out a check and you must be sent the upgrades.
 - Option to randomize skulls, which restricts access to skulls until you get sent them.
-- Shop items are randomized to send out checks
 - Adds stage gates for each chapter.
 - Randomizes access to NPCs.
 

@@ -32,22 +32,22 @@ def _build_location_name_to_id() -> dict[str, int]:
             locs[f"{name} {i}"] = dq_base
             dq_base += 1
 
-    # Shop items (Forest 196-203, Grand Hall 204-211, Black Lab 212-219)
-    for area, base in [
-        ("Forest of Harmony", 196),
-        ("Grand Hall",        204),
-        ("The Black Lab",     212),
-    ]:
-        for i in range(1, 9):
-            locs[f"{area} Shop Item {i}"] = base + i - 1
+    # # Shop items (Forest 196-203, Grand Hall 204-211, Black Lab 212-219)
+    # for area, base in [
+    #     ("Forest of Harmony", 196),
+    #     ("Grand Hall",        204),
+    #     ("The Black Lab",     212),
+    # ]:
+    #     for i in range(1, 9):
+    #         locs[f"{area} Shop Item {i}"] = base + i - 1
 
     # Castle Repair (220-223)
     for i in range(1, 5):
         locs[f"Castle Repair {i}"] = 220 + i - 1
 
-    # Fortress shop items (228-235)
-    for i in range(1, 9):
-        locs[f"Fortress of Fate Shop Item {i}"] = 228 + i - 1
+    # # Fortress shop items (228-235)
+    # for i in range(1, 9):
+    #     locs[f"Fortress of Fate Shop Item {i}"] = 228 + i - 1
 
     # Mini boss and boss defeats (236-243)
     locs["Forest of Harmony Mini Boss Defeated"]  = 236
@@ -127,8 +127,8 @@ def create_regular_locations(world: SkulWorld) -> None:
                      for i in range(1, req_rooms + 1)}
         area_locs[f"{area} Mini Boss Defeated"] = LOCATION_NAME_TO_ID[f"{area} Mini Boss Defeated"]
         area_locs[f"{area} Boss Defeated"]       = LOCATION_NAME_TO_ID[f"{area} Boss Defeated"]
-        area_locs |= {f"{area} Shop Item {i}": LOCATION_NAME_TO_ID[f"{area} Shop Item {i}"]
-                      for i in range(1, 9)}
+        # area_locs |= {f"{area} Shop Item {i}": LOCATION_NAME_TO_ID[f"{area} Shop Item {i}"]
+        #               for i in range(1, 9)}
         region.add_locations(area_locs, SkulLocation)
 
 
