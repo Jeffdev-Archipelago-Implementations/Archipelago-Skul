@@ -15,6 +15,3 @@ Your witch mastery upgrades, NPC unlocks, various currencies, skulls (if enabled
 
 ## Where is the options page?
 Currently, there is no options page. You can download the latest apworlds yaml and the apworld to play [on the latest release](https://github.com/Jeffdev-Archipelago-Implementations/Archipelago-Skul/releases) and configure it to with the options you'd like
-
-## Disclaimer
-This mod and APWorld was made with the help of Claude to help find game functions and patch them more easily. All code has been vetted by myself and and tested.
