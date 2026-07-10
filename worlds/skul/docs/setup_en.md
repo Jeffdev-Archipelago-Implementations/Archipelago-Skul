@@ -7,7 +7,7 @@
   - [r2modman](https://thunderstore.io/package/ebkr/r2modman/) OR [Thunderstore Mod Manager](https://www.overwolf.com/app/Thunderstore-Thunderstore_Mod_Manager)
 - For manual setup:
   - [BepInEx Skul](https://thunderstore.io/c/skul-the-hero-slayer/p/BepInEx/BepInExPack_Skul/)
-  - [SkulArchipelago]()
+  - [SkulAPMod](https://github.com/Jeffdev-Archipelago-Implementations/SkulAPMod/releases/latest)
 
 ## Installation
 Before starting the installation process, here's what you should know:
