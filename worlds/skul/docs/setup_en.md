@@ -28,7 +28,7 @@ Generating a multiworld game works like any other Archipelago. You will download
 ### Manual setup
 1. Download the following mods:
     - [BepInEx Skul](https://thunderstore.io/c/skul-the-hero-slayer/p/BepInEx/BepInExPack_Skul/)
-    - [SkulArchipelago](https://github.com/Jeffdev-Archipelago-Implementations/SkulAPMod/releases/latest)
+    - [SkulAPMod](https://github.com/Jeffdev-Archipelago-Implementations/SkulAPMod/releases/latest)
 2. Open your Skul: The Hero Slayer installation directory. On Steam, you can find it easily by right-clicking the game and clicking `Manage` > `Browse local files`.
 3. Open the BepInEx pack zip file, then open the `BepInExPack` folder.
 4. Drag all folders and files located inside the `BepInExPack` folder and drop them in your Skul: The Hero Slayer directory.
